@@ -113,34 +113,34 @@ flare-landing/
 
 ## Implementation Phases
 
-### Phase 1: Setup (30 min)
+### Phase 1: Setup (30 min) ✅
 - [x] Create Next.js project
-- [ ] Configure Tailwind with Monarch colors
-- [ ] Set up fonts
-- [ ] Create global.css with theme variables
+- [x] Configure Tailwind with Monarch colors
+- [x] Set up fonts (Inter, JetBrains Mono, Zen Kaku Gothic New)
+- [x] Create global.css with theme variables
 
-### Phase 2: Components (2 hours)
-- [ ] Header with logo + nav
-- [ ] Hero section with typing animation
-- [ ] How It Works section
-- [ ] Feature cards grid
-- [ ] Code examples with syntax highlighting
+### Phase 2: Components (2 hours) ✅
+- [x] Header with logo + nav + dark mode toggle
+- [x] Hero section with typing animation
+- [x] How It Works section (3 steps)
+- [x] Feature cards grid (4 features)
+- [x] Code examples with syntax highlighting + tabs
 
-### Phase 3: Polish (1 hour)
-- [ ] For Agents section
-- [ ] API quick reference
-- [ ] Footer
-- [ ] Dark/light mode toggle
+### Phase 3: Polish (1 hour) ✅
+- [x] For Agents section
+- [x] API quick reference table
+- [x] Footer
+- [x] Dark/light mode toggle
 
-### Phase 4: Mobile (1 hour)
-- [ ] Responsive testing
-- [ ] Touch optimization
-- [ ] Performance audit
+### Phase 4: Mobile (1 hour) ✅
+- [x] Responsive testing
+- [x] Touch optimization
+- [x] Performance audit (build passes, edge-compatible)
 
-### Phase 5: Content (30 min)
-- [ ] Final copy review
-- [ ] Meta tags / SEO
-- [ ] Social preview image
+### Phase 5: Content (30 min) ✅
+- [x] Final copy review
+- [x] Meta tags / SEO (full metadata, JSON-LD)
+- [x] Social preview image (OG + Twitter generated)
 
 ## Hourly Check-in Schedule
 - 00:00 - Project setup complete
@@ -150,6 +150,22 @@ flare-landing/
 - 04:00 - Mobile optimization done
 - 05:00 - Final polish + deploy ready
 - 06:00 - Review and handoff
+
+### Phase 6: Deployment ✅
+- [x] GitHub repo created: monarch-xyz/flare-landing
+- [x] ESLint errors fixed
+- [x] Build passes clean
+- [ ] Deploy to Vercel (flare.monarch.xyz) — **READY**
+
+## Deployment
+
+**Repository:** https://github.com/monarch-xyz/flare-landing
+
+**To deploy:**
+1. Import to Vercel: https://vercel.com/new
+2. Select `monarch-xyz/flare-landing`
+3. Set custom domain: `flare.monarch.xyz`
+4. Deploy
 
 ## Notes
 - Keep it STATIC — no backend, no auth, just info
