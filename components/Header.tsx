@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { RiGithubFill, RiDiscordFill, RiBookLine, RiMenuLine, RiCloseLine, RiMoonLine, RiSunLine } from 'react-icons/ri';
+import { RiGithubFill, RiDiscordFill, RiBookLine, RiMenuLine, RiCloseLine, RiMoonLine, RiSunLine, RiRocketLine } from 'react-icons/ri';
 import { cn } from '@/lib/utils';
 
 export function Header() {
@@ -16,15 +16,12 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Sync dark mode state with DOM on mount
-  // Using a ref to avoid the effect-setState pattern
   useEffect(() => {
     const isDark = document.documentElement.classList.contains('dark') || 
       window.matchMedia('(prefers-color-scheme: dark)').matches;
     if (isDark) {
       document.documentElement.classList.add('dark');
     }
-    // Sync state without causing re-render cascade
     if (isDark !== darkMode) {
       setDarkMode(isDark);
     }
@@ -37,9 +34,9 @@ export function Header() {
   };
 
   const navLinks = [
-    { href: 'https://github.com/monarch-xyz/flare/blob/main/docs/ARCHITECTURE.md', label: 'Docs', icon: RiBookLine },
-    { href: 'https://github.com/monarch-xyz/flare', label: 'GitHub', icon: RiGithubFill },
-    { href: 'https://discord.gg/monarch', label: 'Discord', icon: RiDiscordFill },
+    { href: 'https://github.com/monarch-xyz/flare/blob/main/docs/ARCHITECTURE.md', label: 'Docs', icon: RiBookLine, external: true },
+    { href: 'https://github.com/monarch-xyz/flare', label: 'GitHub', icon: RiGithubFill, external: true },
+    { href: 'https://discord.gg/monarch', label: 'Discord', icon: RiDiscordFill, external: true },
   ];
 
   return (
@@ -63,14 +60,24 @@ export function Header() {
               <Link
                 key={link.label}
                 href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
+                target={link.external ? '_blank' : undefined}
+                rel={link.external ? 'noopener noreferrer' : undefined}
                 className="flex items-center gap-2 text-secondary hover:text-foreground transition-colors no-underline"
               >
                 <link.icon className="w-4 h-4" />
                 <span className="text-sm">{link.label}</span>
               </Link>
             ))}
+            
+            {/* Get Started CTA */}
+            <a
+              href="#onboarding"
+              className="flex items-center gap-2 px-4 py-2 bg-gradient-flare text-white text-sm font-medium rounded-md hover:opacity-90 transition-opacity no-underline"
+            >
+              <RiRocketLine className="w-4 h-4" />
+              Get Started
+            </a>
+
             <button
               onClick={toggleDarkMode}
               className="p-2 rounded-md hover:bg-hovered transition-colors"
@@ -103,12 +110,22 @@ export function Header() {
         {mobileMenuOpen && (
           <nav className="md:hidden py-4 border-t border-border">
             <div className="flex flex-col gap-2">
+              {/* Get Started - prominent on mobile */}
+              <a
+                href="#onboarding"
+                className="flex items-center gap-3 px-4 py-3 bg-gradient-flare text-white rounded-md no-underline"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <RiRocketLine className="w-5 h-5" />
+                <span className="font-medium">Get Started</span>
+              </a>
+              
               {navLinks.map((link) => (
                 <Link
                   key={link.label}
                   href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target={link.external ? '_blank' : undefined}
+                  rel={link.external ? 'noopener noreferrer' : undefined}
                   className="flex items-center gap-3 px-4 py-3 rounded-md hover:bg-hovered transition-colors no-underline"
                   onClick={() => setMobileMenuOpen(false)}
                 >
