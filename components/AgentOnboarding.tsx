@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { RiRobot2Line, RiNumber1, RiNumber2, RiNumber3, RiCheckLine, RiFileCopyLine } from 'react-icons/ri';
+import { RiRobot2Line, RiCheckLine, RiFileCopyLine } from 'react-icons/ri';
 import { useState } from 'react';
 import { CodeBlock } from './ui/CodeBlock';
 
