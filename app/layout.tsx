@@ -123,7 +123,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${inter.variable} ${jetbrainsMono.variable} ${zenKakuGothicNew.variable}`} suppressHydrationWarning>
+      <body className={`${inter.variable} ${jetbrainsMono.variable} ${zenKakuGothicNew.variable} font-inter antialiased`} suppressHydrationWarning>
         {children}
       </body>
     </html>
