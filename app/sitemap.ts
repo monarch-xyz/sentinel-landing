@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://flare.monarch.xyz';
+  const baseUrl = 'https://sentinel.monarch.xyz';
 
   return [
     {

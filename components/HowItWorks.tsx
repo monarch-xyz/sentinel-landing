@@ -15,7 +15,7 @@ const steps = [
   {
     icon: RiCloudLine,
     title: 'Deploy',
-    description: 'Register your signal via REST API. Flare handles the indexing and evaluation.',
+    description: 'Register your signal via REST API. Sentinel handles the indexing and evaluation.',
     code: `POST /api/v1/signals
 Authorization: Bearer sk_...
 { "name": "Whale Alert", ... }`,
@@ -50,7 +50,7 @@ export function HowItWorks() {
           className="text-center mb-16"
         >
           <h2 className="font-zen text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-            Three Steps to <span className="text-gradient-flare">Automation</span>
+            Three Steps to <span className="text-gradient-sentinel">Automation</span>
           </h2>
           <p className="text-secondary text-lg max-w-2xl mx-auto">
             From definition to action in minutes, not hours.
@@ -83,7 +83,7 @@ export function HowItWorks() {
             >
               {/* Step number */}
               <motion.div 
-                className="absolute -top-3 -left-3 md:-top-4 md:-left-4 w-7 h-7 md:w-8 md:h-8 bg-gradient-flare rounded-full flex items-center justify-center text-white font-bold text-xs md:text-sm shadow-lg shadow-[#ff6b35]/30 z-10"
+                className="absolute -top-3 -left-3 md:-top-4 md:-left-4 w-7 h-7 md:w-8 md:h-8 bg-gradient-sentinel rounded-full flex items-center justify-center text-white font-bold text-xs md:text-sm shadow-lg shadow-[#ff6b35]/30 z-10"
                 whileHover={{ scale: 1.1 }}
               >
                 {index + 1}
@@ -95,7 +95,7 @@ export function HowItWorks() {
                 <h3 className="font-zen text-lg md:text-xl font-bold mb-2">{step.title}</h3>
                 <p className="text-secondary mb-4 text-sm leading-relaxed">{step.description}</p>
                 
-                {/* Mini code block with Flare syntax colors */}
+                {/* Mini code block with Sentinel syntax colors */}
                 <div className="relative text-xs bg-[#0d1117] rounded-md p-3 overflow-x-auto font-mono custom-scrollbar border border-[#30363d] group-hover:border-[#ff6b35]/20 transition-colors">
                   {/* Subtle glow */}
                   <div className="absolute inset-0 bg-gradient-to-r from-[#ff6b35]/0 via-[#ff6b35]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-md pointer-events-none" />

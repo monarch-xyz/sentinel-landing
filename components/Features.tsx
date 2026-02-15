@@ -40,7 +40,7 @@ export function Features() {
           className="text-center mb-16"
         >
           <h2 className="font-zen text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-            Composable <span className="text-gradient-flare">Signal Primitives</span>
+            Composable <span className="text-gradient-sentinel">Signal Primitives</span>
           </h2>
           <p className="text-secondary text-lg max-w-2xl mx-auto">
             Everything you need to build sophisticated on-chain monitoring.

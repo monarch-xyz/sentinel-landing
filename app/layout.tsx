@@ -24,13 +24,13 @@ const zenKakuGothicNew = Zen_Kaku_Gothic_New({
   weight: '700',
 });
 
-const siteUrl = 'https://flare.monarch.xyz';
+const siteUrl = 'https://sentinel.monarch.xyz';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Flare - Event Triggers for DeFi Agents',
-    template: '%s | Flare',
+    default: 'Sentinel - Event Triggers for DeFi Agents',
+    template: '%s | Sentinel',
   },
   description: 'Composable signal monitoring for DeFi. Watch the chain while you sleep. Define conditions in simple DSL, deploy via API, receive webhooks when triggered. Built by Monarch.',
   keywords: [
@@ -65,16 +65,16 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Flare - Event Triggers for DeFi Agents',
+    title: 'Sentinel - Event Triggers for DeFi Agents',
     description: 'Composable signal monitoring for DeFi. Watch the chain while you sleep. Built by Monarch.',
     url: siteUrl,
-    siteName: 'Flare by Monarch',
+    siteName: 'Sentinel by Monarch',
     locale: 'en_US',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Flare - Event Triggers for DeFi Agents',
+    title: 'Sentinel - Event Triggers for DeFi Agents',
     description: 'Composable signal monitoring for DeFi. Watch the chain while you sleep.',
     creator: '@monarchxyz',
     site: '@monarchxyz',
@@ -89,7 +89,7 @@ export const metadata: Metadata = {
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
-  name: 'Flare',
+  name: 'Sentinel',
   description: 'Composable signal monitoring for DeFi. Event triggers for AI agents and automated workflows.',
   url: siteUrl,
   applicationCategory: 'DeveloperApplication',

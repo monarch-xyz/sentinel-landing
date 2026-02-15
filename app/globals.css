@@ -5,9 +5,9 @@
 @theme {
   /* Flare primary colors */
   --color-primary: #ff6b35;
-  --color-flare-primary: #ff6b35;
-  --color-flare-accent: #ff9f1c;
-  --color-flare-glow: #ff6b3530;
+  --color-sentinel-primary: #ff6b35;
+  --color-sentinel-accent: #ff9f1c;
+  --color-sentinel-glow: #ff6b3530;
 }
 
 @theme inline {
@@ -89,11 +89,11 @@
   }
 
   /* Flare gradient */
-  .bg-gradient-flare {
+  .bg-gradient-sentinel {
     background-image: linear-gradient(135deg, #ff6b35 0%, #ff9f1c 100%);
   }
 
-  .text-gradient-flare {
+  .text-gradient-sentinel {
     background: linear-gradient(135deg, #ff6b35 0%, #ff9f1c 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -128,7 +128,7 @@
   --grid-cell-active: rgba(255, 107, 53, 0.6);
 
   /* Palette */
-  --palette-flare: #ff6b35;
+  --palette-sentinel: #ff6b35;
   --palette-ember: #ff9f1c;
   --palette-white: #f0f2f7;
   --palette-bg-hovered: #f6f8fb;
@@ -172,7 +172,7 @@
   --grid-cell-active: rgba(255, 107, 53, 0.6);
 
   /* Palette - dark */
-  --palette-flare: #ff6b35;
+  --palette-sentinel: #ff6b35;
   --palette-ember: #ff9f1c;
   --palette-bg-black: #16181a;
   --palette-bg-black-secondary: #202426;
@@ -252,8 +252,8 @@ body {
   background-color: var(--color-background-hovered);
 }
 
-.bg-flare-primary {
-  background-color: var(--palette-flare);
+.bg-sentinel-primary {
+  background-color: var(--palette-sentinel);
 }
 
 .text-primary {

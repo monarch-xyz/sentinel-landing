@@ -23,7 +23,7 @@ const webhookPayloadCode = `{
 }`;
 
 const agentActionCode = `// Your webhook handler
-app.post('/flare-webhook', async (req, res) => {
+app.post('/sentinel-webhook', async (req, res) => {
   const { signal_id, result, scope } = req.body;
   
   if (result.condition_met) {
@@ -70,11 +70,11 @@ export function ForAgents() {
             </div>
 
             <h2 className="font-zen text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
-              Your Agent&apos;s <span className="text-gradient-flare">Event Source</span>
+              Your Agent&apos;s <span className="text-gradient-sentinel">Event Source</span>
             </h2>
 
             <p className="text-secondary text-lg mb-8 leading-relaxed">
-              AI agents need reliable blockchain data triggers. Flare provides the event layer that 
+              AI agents need reliable blockchain data triggers. Sentinel provides the event layer that 
               connects on-chain activity to your agent&apos;s actions. No polling, no infrastructure — 
               just webhooks when it matters.
             </p>
@@ -87,7 +87,7 @@ export function ForAgents() {
                 transition={{ duration: 0.2 }}
               >
                 <RiFlashlightLine className="w-5 h-5 text-[#ff6b35]" />
-                <span className="text-sm font-medium">Flare Signal</span>
+                <span className="text-sm font-medium">Sentinel Signal</span>
               </motion.div>
               <RiArrowRightSLine className="w-6 h-6 text-secondary rotate-90 sm:rotate-0 self-center" />
               <motion.div 

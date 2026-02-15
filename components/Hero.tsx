@@ -89,7 +89,7 @@ export function Hero() {
             <h1 className="font-zen text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
               Watch the Chain
               <br />
-              <span className="text-gradient-flare">While You Sleep</span>
+              <span className="text-gradient-sentinel">While You Sleep</span>
             </h1>
 
             {/* Typing subtitle */}
@@ -130,7 +130,7 @@ export function Hero() {
                 </Button>
               </a>
               <a 
-                href="https://github.com/monarch-xyz/flare/blob/main/docs/ARCHITECTURE.md"
+                href="https://github.com/monarch-xyz/sentinel/blob/main/docs/ARCHITECTURE.md"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="no-underline"

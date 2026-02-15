@@ -44,7 +44,7 @@ export function ApiReference() {
             className="text-center mb-12"
           >
             <h2 className="font-zen text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-              Simple <span className="text-gradient-flare">REST API</span>
+              Simple <span className="text-gradient-sentinel">REST API</span>
             </h2>
             <p className="text-secondary text-lg max-w-2xl mx-auto">
               Everything you need in four endpoints.
@@ -135,7 +135,7 @@ export function ApiReference() {
             className="text-center"
           >
             <a
-              href="https://github.com/monarch-xyz/flare/blob/main/docs/API.md"
+              href="https://github.com/monarch-xyz/sentinel/blob/main/docs/API.md"
               target="_blank"
               rel="noopener noreferrer"
               className="no-underline inline-block"

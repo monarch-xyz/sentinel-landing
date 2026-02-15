@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { RiGithubFill, RiDiscordFill, RiBookLine, RiExternalLinkLine } from 'react-icons/ri';
 
 const links = [
-  { href: 'https://github.com/monarch-xyz/flare/blob/main/docs/ARCHITECTURE.md', label: 'Docs', icon: RiBookLine },
-  { href: 'https://github.com/monarch-xyz/flare', label: 'GitHub', icon: RiGithubFill },
+  { href: 'https://github.com/monarch-xyz/sentinel/blob/main/docs/ARCHITECTURE.md', label: 'Docs', icon: RiBookLine },
+  { href: 'https://github.com/monarch-xyz/sentinel', label: 'GitHub', icon: RiGithubFill },
   { href: 'https://discord.gg/monarch', label: 'Discord', icon: RiDiscordFill },
 ];
 
@@ -18,7 +18,7 @@ export function Footer() {
           <div className="flex flex-col items-center md:items-start gap-2">
             <Link href="/" className="flex items-center gap-2 no-underline">
               <span className="text-2xl">🔥</span>
-              <span className="font-zen text-xl font-bold text-foreground">Flare</span>
+              <span className="font-zen text-xl font-bold text-foreground">Sentinel</span>
             </Link>
             <p className="text-secondary text-sm">Event infrastructure for DeFi agents</p>
           </div>

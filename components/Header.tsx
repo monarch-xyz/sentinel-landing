@@ -34,8 +34,8 @@ export function Header() {
   };
 
   const navLinks = [
-    { href: 'https://github.com/monarch-xyz/flare/blob/main/docs/ARCHITECTURE.md', label: 'Docs', icon: RiBookLine, external: true },
-    { href: 'https://github.com/monarch-xyz/flare', label: 'GitHub', icon: RiGithubFill, external: true },
+    { href: 'https://github.com/monarch-xyz/sentinel/blob/main/docs/ARCHITECTURE.md', label: 'Docs', icon: RiBookLine, external: true },
+    { href: 'https://github.com/monarch-xyz/sentinel', label: 'GitHub', icon: RiGithubFill, external: true },
     { href: 'https://discord.gg/monarch', label: 'Discord', icon: RiDiscordFill, external: true },
   ];
 
@@ -51,7 +51,7 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 no-underline">
             <span className="text-2xl">🔥</span>
-            <span className="font-zen text-xl font-bold text-foreground">Flare</span>
+            <span className="font-zen text-xl font-bold text-foreground">Sentinel</span>
           </Link>
 
           {/* Desktop Nav */}
@@ -72,7 +72,7 @@ export function Header() {
             {/* Get Started CTA */}
             <a
               href="#onboarding"
-              className="flex items-center gap-2 px-4 py-2 bg-gradient-flare text-white text-sm font-medium rounded-md hover:opacity-90 transition-opacity no-underline"
+              className="flex items-center gap-2 px-4 py-2 bg-gradient-sentinel text-white text-sm font-medium rounded-md hover:opacity-90 transition-opacity no-underline"
             >
               <RiRocketLine className="w-4 h-4" />
               Get Started
@@ -113,7 +113,7 @@ export function Header() {
               {/* Get Started - prominent on mobile */}
               <a
                 href="#onboarding"
-                className="flex items-center gap-3 px-4 py-3 bg-gradient-flare text-white rounded-md no-underline"
+                className="flex items-center gap-3 px-4 py-3 bg-gradient-sentinel text-white rounded-md no-underline"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <RiRocketLine className="w-5 h-5" />

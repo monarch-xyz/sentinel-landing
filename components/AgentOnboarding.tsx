@@ -5,9 +5,9 @@ import { RiRobot2Line, RiNumber1, RiNumber2, RiNumber3, RiCheckLine, RiFileCopyL
 import { useState } from 'react';
 import { CodeBlock } from './ui/CodeBlock';
 
-const step1Code = `# flare-skill.md
+const step1Code = `# sentinel-skill.md
 
-You have access to Flare for blockchain monitoring.
+You have access to Sentinel for blockchain monitoring.
 
 ## Capabilities
 - Monitor DeFi positions for changes
@@ -17,7 +17,7 @@ You have access to Flare for blockchain monitoring.
 ## Quick Setup
 To monitor a position, create a signal:
 
-POST https://api.flare.monarch.xyz/signals
+POST https://api.sentinel.monarch.xyz/signals
 Authorization: Bearer YOUR_API_KEY
 
 {
@@ -31,8 +31,8 @@ Authorization: Bearer YOUR_API_KEY
   "webhook_url": "YOUR_WEBHOOK_URL"
 }`;
 
-const step2Code = `curl -X POST https://api.flare.monarch.xyz/signals \\
-  -H "Authorization: Bearer $FLARE_API_KEY" \\
+const step2Code = `curl -X POST https://api.sentinel.monarch.xyz/signals \\
+  -H "Authorization: Bearer $SENTINEL_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
     "name": "Whale Movement Alert",
@@ -48,7 +48,7 @@ const step2Code = `curl -X POST https://api.flare.monarch.xyz/signals \\
     "webhook_url": "https://your-agent.com/webhook"
   }'`;
 
-const step3Code = `# When Flare triggers, you receive:
+const step3Code = `# When Sentinel triggers, you receive:
 {
   "signal_id": "sig_abc123",
   "triggered": true,
@@ -77,16 +77,16 @@ export function AgentOnboarding() {
   const steps = [
     {
       number: 1,
-      title: 'Add Flare to your agent skills',
-      description: 'Include the Flare skill in your agent\'s capabilities. This teaches your agent how to create and manage blockchain monitors.',
+      title: 'Add Sentinel to your agent skills',
+      description: 'Include the Sentinel skill in your agent\'s capabilities. This teaches your agent how to create and manage blockchain monitors.',
       code: step1Code,
       language: 'markdown',
-      filename: 'flare-skill.md',
+      filename: 'sentinel-skill.md',
     },
     {
       number: 2,
       title: 'Create your first signal',
-      description: 'Your agent calls the Flare API to register a monitoring condition. One API call, and Flare handles the rest.',
+      description: 'Your agent calls the Sentinel API to register a monitoring condition. One API call, and Sentinel handles the rest.',
       code: step2Code,
       language: 'bash',
       filename: 'create-signal.sh',
@@ -94,7 +94,7 @@ export function AgentOnboarding() {
     {
       number: 3,
       title: 'React to events',
-      description: 'When conditions trigger, Flare sends a webhook to your agent. Take action automatically—no polling required.',
+      description: 'When conditions trigger, Sentinel sends a webhook to your agent. Take action automatically—no polling required.',
       code: step3Code,
       language: 'json',
       filename: 'webhook-response.md',
@@ -124,7 +124,7 @@ export function AgentOnboarding() {
             <span className="text-sm font-medium text-[#ff6b35]">Agent Integration Guide</span>
           </div>
           <h2 className="font-zen text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-            Get Your Agent <span className="text-gradient-flare">Watching in Minutes</span>
+            Get Your Agent <span className="text-gradient-sentinel">Watching in Minutes</span>
           </h2>
           <p className="text-secondary text-lg max-w-2xl mx-auto">
             Three steps to give your AI agent eyes on the blockchain. No infrastructure setup, no complex indexers.
@@ -144,7 +144,7 @@ export function AgentOnboarding() {
             >
               {/* Step indicator */}
               <div className="flex items-start gap-6">
-                <div className="flex-shrink-0 w-12 h-12 bg-gradient-flare rounded-full flex items-center justify-center text-white font-bold text-lg">
+                <div className="flex-shrink-0 w-12 h-12 bg-gradient-sentinel rounded-full flex items-center justify-center text-white font-bold text-lg">
                   {step.number}
                 </div>
                 <div className="flex-1 pt-2">
@@ -191,10 +191,10 @@ export function AgentOnboarding() {
         >
           <p className="text-secondary mb-4">Ready to give your agent superpowers?</p>
           <a
-            href="https://github.com/monarch-xyz/flare/blob/main/docs/ARCHITECTURE.md"
+            href="https://github.com/monarch-xyz/sentinel/blob/main/docs/ARCHITECTURE.md"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-flare text-white font-medium rounded-md hover:opacity-90 transition-opacity no-underline"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-sentinel text-white font-medium rounded-md hover:opacity-90 transition-opacity no-underline"
           >
             <RiRobot2Line className="w-5 h-5" />
             Read Full Agent Docs

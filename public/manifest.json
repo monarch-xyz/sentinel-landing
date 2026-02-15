@@ -1,6 +1,6 @@
 {
-  "name": "Flare - Event Triggers for DeFi Agents",
-  "short_name": "Flare",
+  "name": "Sentinel - Event Triggers for DeFi Agents",
+  "short_name": "Sentinel",
   "description": "Composable signal monitoring for DeFi. Watch the chain while you sleep.",
   "start_url": "/",
   "display": "standalone",
