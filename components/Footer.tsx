@@ -18,9 +18,9 @@ export function Footer() {
           <div className="flex flex-col items-center md:items-start gap-2">
             <Link href="/" className="flex items-center gap-2 no-underline">
               <span className="text-2xl">🔥</span>
-              <span className="font-zen text-xl font-bold text-foreground">Sentinel</span>
+              <span className="font-serif text-xl font-medium text-foreground">Sentinel</span>
             </Link>
-            <p className="text-secondary text-sm">Event infrastructure for DeFi agents</p>
+            <p className="text-secondary text-sm font-serif italic">Awareness for DeFi agents</p>
           </div>
 
           {/* Links */}
@@ -48,7 +48,7 @@ export function Footer() {
             className="flex items-center gap-2 px-4 py-2 bg-surface rounded-lg border border-border hover:border-[#ff6b35]/30 transition-colors no-underline group"
           >
             <span className="text-sm text-secondary group-hover:text-foreground">Built by</span>
-            <span className="font-zen font-bold text-[#f45f2d]">Monarch</span>
+            <span className="font-serif font-medium text-[#f45f2d]">Monarch</span>
             <RiExternalLinkLine className="w-4 h-4 text-secondary" />
           </a>
         </div>

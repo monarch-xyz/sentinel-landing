@@ -270,6 +270,10 @@ body::before {
   font-family: var(--font-zen), 'Zen Kaku Gothic New', sans-serif;
 }
 
+.font-serif {
+  font-family: var(--font-serif), 'EB Garamond', Georgia, serif;
+}
+
 /* Code block styling */
 pre, code {
   font-family: var(--font-mono), 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;

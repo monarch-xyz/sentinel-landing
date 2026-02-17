@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { RiGithubFill, RiDiscordFill, RiBookLine, RiMenuLine, RiCloseLine, RiMoonLine, RiSunLine, RiRocketLine } from 'react-icons/ri';
+import { RiGithubFill, RiDiscordFill, RiBookLine, RiMenuLine, RiCloseLine, RiMoonLine, RiSunLine } from 'react-icons/ri';
 import { cn } from '@/lib/utils';
 
 export function Header() {
@@ -51,7 +51,7 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 no-underline">
             <span className="text-2xl">🔥</span>
-            <span className="font-zen text-xl font-bold text-foreground">Sentinel</span>
+            <span className="font-serif text-xl font-medium text-foreground">Sentinel</span>
           </Link>
 
           {/* Desktop Nav */}
@@ -69,15 +69,6 @@ export function Header() {
               </Link>
             ))}
             
-            {/* Get Started CTA */}
-            <a
-              href="#onboarding"
-              className="flex items-center gap-2 px-4 py-2 bg-[#ff6b35] text-white text-sm font-medium rounded-md hover:opacity-90 transition-opacity no-underline"
-            >
-              <RiRocketLine className="w-4 h-4" />
-              Get Started
-            </a>
-
             <button
               onClick={toggleDarkMode}
               className="p-2 rounded-md hover:bg-hovered transition-colors"
@@ -110,16 +101,6 @@ export function Header() {
         {mobileMenuOpen && (
           <nav className="md:hidden py-4 border-t border-border">
             <div className="flex flex-col gap-2">
-              {/* Get Started - prominent on mobile */}
-              <a
-                href="#onboarding"
-                className="flex items-center gap-3 px-4 py-3 bg-[#ff6b35] text-white rounded-md no-underline"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <RiRocketLine className="w-5 h-5" />
-                <span className="font-medium">Get Started</span>
-              </a>
-              
               {navLinks.map((link) => (
                 <Link
                   key={link.label}

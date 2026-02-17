@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, JetBrains_Mono, Zen_Kaku_Gothic_New } from 'next/font/google';
+import { Inter, JetBrains_Mono, EB_Garamond } from 'next/font/google';
 import './globals.css';
 
 // Self-hosted fonts via next/font (eliminates render-blocking requests)
@@ -16,12 +16,13 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ['400', '500', '600'],
 });
 
-// Zen Kaku Gothic New for headings - subsetted to Latin only via next/font
-const zenKakuGothicNew = Zen_Kaku_Gothic_New({
+// EB Garamond for elegant headings - sovereignty/narrative vibe
+const ebGaramond = EB_Garamond({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-zen',
-  weight: '700',
+  variable: '--font-serif',
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
 });
 
 const siteUrl = 'https://sentinel.monarchlend.xyz';
@@ -123,7 +124,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${inter.variable} ${jetbrainsMono.variable} ${zenKakuGothicNew.variable} font-inter antialiased`} suppressHydrationWarning>
+      <body className={`${inter.variable} ${jetbrainsMono.variable} ${ebGaramond.variable} font-inter antialiased`} suppressHydrationWarning>
         {children}
       </body>
     </html>
