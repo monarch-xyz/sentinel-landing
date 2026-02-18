@@ -2,103 +2,101 @@
 
 import { motion } from 'framer-motion';
 import { RiArrowDownLine } from 'react-icons/ri';
+import { GridAccent } from './ui/GridAccent';
+import { SectionTag } from './ui/SectionTag';
 
 export function Hero() {
+  const scrollToSection = () => {
+    const element = document.getElementById('story');
+    element?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <section className="relative min-h-screen flex flex-col justify-center pt-14 md:pt-16">
-      {/* Subtle background gradient */}
+    <section className="relative min-h-screen flex flex-col pt-14 md:pt-16">
+      {/* Dot grid background with radial fade */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 bg-dot-grid pointer-events-none opacity-60"
         style={{
-          background: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255, 107, 53, 0.03) 0%, transparent 60%)',
+          maskImage: 'radial-gradient(ellipse 80% 70% at 30% 40%, black 0%, transparent 70%)',
+          WebkitMaskImage: 'radial-gradient(ellipse 80% 70% at 30% 40%, black 0%, transparent 70%)',
         }}
         aria-hidden="true"
       />
 
+      {/* Grid accent top-right */}
+      <GridAccent position="top-right" variant="dots" size="lg" />
+
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-6 sm:px-8 md:px-12 lg:px-16">
-        <div className="max-w-4xl mx-auto">
-          {/* Opening - provocative */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="font-serif text-lg sm:text-xl text-secondary mb-8 italic"
-          >
-            Most agents are blind.
-          </motion.p>
+      <div className="flex-1 flex items-center relative z-10">
+        <div className="container mx-auto px-6 sm:px-8 md:px-12 lg:px-16">
+          <div className="max-w-3xl">
+            {/* Section tag */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="mb-6"
+            >
+              <SectionTag>Awareness for Agents</SectionTag>
+            </motion.div>
 
-          {/* Main headline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium leading-[1.1] mb-8"
-          >
-            Give your agent
-            <br />
-            <span className="text-[#ff6b35]">awareness</span> in DeFi.
-          </motion.h1>
+            {/* Opening line */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="font-serif text-lg text-secondary mb-4 italic"
+            >
+              Most agents are blind to the chain.
+            </motion.p>
 
-          {/* Narrative paragraph */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="max-w-2xl mb-12"
-          >
-            <p className="font-serif text-xl sm:text-2xl text-secondary leading-relaxed mb-6">
-              Raw blockchain events are noise. Every supply, withdraw, borrow — 
-              thousands per hour. That&apos;s not signal. That&apos;s spam.
-            </p>
-            <p className="font-serif text-xl sm:text-2xl leading-relaxed">
-              What matters isn&apos;t <em>events</em>. It&apos;s <em>conditions</em>.
+            {/* Main headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.15 }}
+              className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] mb-8"
+            >
+              Give your agent
               <br />
-              <span className="text-[#ff6b35]">When something meaningful happens.</span>
-            </p>
-          </motion.div>
+              <span className="text-[#ff6b35]">awareness</span> in DeFi.
+            </motion.h1>
 
-          {/* CTA */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex flex-col sm:flex-row gap-4 mb-16"
-          >
-            <a
-              href="#story"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#ff6b35] text-white font-serif text-lg rounded-md hover:bg-[#ff6b35]/90 transition-colors no-underline"
+            {/* Subtext */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-lg sm:text-xl text-secondary max-w-xl mb-10 leading-relaxed"
             >
-              Learn how it works
-              <RiArrowDownLine className="w-5 h-5" />
-            </a>
-            <a
-              href="https://github.com/monarch-xyz/sentinel/blob/main/docs/ARCHITECTURE.md"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-8 py-4 border border-current text-secondary font-serif text-lg rounded-md hover:text-[#ff6b35] hover:border-[#ff6b35] transition-colors no-underline"
-            >
-              Read the docs
-            </a>
-          </motion.div>
+              Define conditions that matter. Sentinel watches the chain and 
+              fires webhooks only when your conditions are met — signal, not noise.
+            </motion.p>
 
-          {/* Byline */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="text-sm text-secondary"
-          >
-            Built by{' '}
-            <a
-              href="https://monarchlend.xyz"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#ff6b35] hover:underline"
+            {/* CTAs */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.25 }}
+              className="flex flex-col sm:flex-row gap-4"
             >
-              Monarch
-            </a>
-          </motion.p>
+              <button
+                onClick={scrollToSection}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#ff6b35] text-white text-sm font-medium rounded-md hover:bg-[#ff6b35]/90 transition-colors"
+              >
+                Learn More
+                <RiArrowDownLine className="w-4 h-4" />
+              </button>
+              <a
+                href="https://github.com/monarch-xyz/sentinel/blob/main/docs/ARCHITECTURE.md"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center px-6 py-3 border border-border text-secondary text-sm font-medium rounded-md hover:border-[#ff6b35]/30 hover:text-foreground transition-colors no-underline"
+              >
+                Read Docs
+              </a>
+            </motion.div>
+          </div>
         </div>
       </div>
 
@@ -106,7 +104,7 @@ export function Hero() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 0.5 }}
+        transition={{ delay: 1, duration: 0.5 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2"
       >
         <motion.div

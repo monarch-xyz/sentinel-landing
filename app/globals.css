@@ -114,6 +114,8 @@
   --grid-line-color: rgba(0, 0, 0, 0.04);
   --grid-dot-color: rgba(0, 0, 0, 0.08);
   --grid-cell-active: rgba(255, 107, 53, 0.6);
+  --grid-cell-muted: rgba(142, 142, 142, 0.2);
+  --grid-cell-active: rgba(255, 107, 53, 0.6);
 
   /* Palette */
   --palette-sentinel: #ff6b35;
@@ -157,6 +159,8 @@
   /* Grid texture colors (dark mode) */
   --grid-line-color: rgba(255, 255, 255, 0.04);
   --grid-dot-color: rgba(255, 255, 255, 0.08);
+  --grid-cell-active: rgba(255, 107, 53, 0.6);
+  --grid-cell-muted: rgba(142, 142, 142, 0.15);
   --grid-cell-active: rgba(255, 107, 53, 0.6);
 
   /* Palette - dark */

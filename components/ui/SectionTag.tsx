@@ -2,23 +2,22 @@
 
 import { cn } from '@/lib/utils';
 
-interface SectionTagProps {
-  children: React.ReactNode;
+type SectionTagProps = {
+  children: string;
   className?: string;
-}
+};
 
 export function SectionTag({ children, className }: SectionTagProps) {
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium',
-        'bg-[#ff6b35]/10 text-[#ff6b35] rounded-full',
-        'dark:bg-[#ff6b35]/20',
-        className
+        'inline-block font-mono text-xs tracking-[0.2em] uppercase',
+        'text-[#ff6b35]/80 border border-[#ff6b35]/20 rounded',
+        'px-2 py-1',
+        className,
       )}
     >
-      <span className="w-1.5 h-1.5 rounded-full bg-[#ff6b35] animate-pulse" />
-      {children}
+      [ {children} ]
     </span>
   );
 }
