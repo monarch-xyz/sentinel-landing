@@ -5,7 +5,6 @@ import { useConnection, useConnect, useConnectors, useDisconnect, useSignMessage
 import { Button } from '@/components/ui/Button';
 import { requestSiweNonce, verifySiwe } from '@/lib/api/auth';
 import { buildSiweMessage } from '@/lib/auth/siwe';
-import { storeSession } from '@/lib/auth/session';
 
 interface WalletAuthProps {
   onSuccess?: () => void;
@@ -54,8 +53,7 @@ export function WalletAuth({ onSuccess }: WalletAuthProps) {
         nonce: nonceResponse.nonce,
       });
       const signature = await signMessageAsync({ message });
-      const session = await verifySiwe({ message, signature, address });
-      storeSession(session);
+      await verifySiwe({ message, signature, address });
       onSuccess?.();
       setStatus('idle');
     } catch (signError) {

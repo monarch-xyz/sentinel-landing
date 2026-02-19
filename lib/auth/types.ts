@@ -5,6 +5,7 @@ export interface AuthSession {
   expiresAt?: string;
   address?: string;
   email?: string;
+  sentinelUserId?: string;
   provider: AuthProvider;
 }
 
@@ -27,4 +28,8 @@ export interface SiweVerifyRequest {
   message: string;
   signature: string;
   address: string;
+}
+
+export interface TelegramConnectRequest {
+  token: string;
 }

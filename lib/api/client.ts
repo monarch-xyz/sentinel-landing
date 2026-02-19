@@ -39,7 +39,10 @@ export const createApiClient = (options: ApiClientOptions = {}) => {
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     };
 
-    const response = await fetch(`${baseUrl}${path}`, {
+    const isAbsolute = path.startsWith('http://') || path.startsWith('https://');
+    const requestUrl = isAbsolute ? path : `${baseUrl}${path}`;
+
+    const response = await fetch(requestUrl, {
       ...init,
       headers,
     });

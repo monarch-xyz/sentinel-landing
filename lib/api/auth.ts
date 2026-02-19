@@ -1,17 +1,23 @@
-import { webappClient } from '@/lib/api/webapp';
+import { createApiClient } from '@/lib/api/client';
 import {
   AuthSession,
   MagicLinkRequest,
   SiweNonceResponse,
+  TelegramConnectRequest,
   SiweVerifyRequest,
 } from '@/lib/auth/types';
 
-export const requestMagicLink = (payload: MagicLinkRequest) =>
-  webappClient.post<AuthSession, MagicLinkRequest>('/auth/magic-link', payload);
+const localClient = createApiClient({ baseUrl: '' });
 
-export const requestSiweNonce = () => webappClient.get<SiweNonceResponse>('/auth/siwe/nonce');
+export const requestMagicLink = (payload: MagicLinkRequest) =>
+  localClient.post<AuthSession, MagicLinkRequest>('/api/auth/magic-link', payload);
+
+export const requestSiweNonce = () => localClient.get<SiweNonceResponse>('/api/auth/siwe/nonce');
 
 export const verifySiwe = (payload: SiweVerifyRequest) =>
-  webappClient.post<AuthSession, SiweVerifyRequest>('/auth/siwe/verify', payload);
+  localClient.post<AuthSession, SiweVerifyRequest>('/api/auth/siwe/verify', payload);
 
-export const logout = () => webappClient.post<void, Record<string, never>>('/auth/logout', {});
+export const logout = () => localClient.post<void, Record<string, never>>('/api/auth/logout', {});
+
+export const connectTelegram = (payload: TelegramConnectRequest) =>
+  localClient.post<{ ok: boolean; app_user_id: string }, TelegramConnectRequest>('/api/telegram/connect', payload);

@@ -1,5 +1,9 @@
+'use client';
+
 import { ReactNode } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { RiLogoutCircleRLine, RiNotification3Line, RiPulseLine } from 'react-icons/ri';
 import { Button } from '@/components/ui/Button';
 
@@ -13,6 +17,22 @@ const navItems = [
 ];
 
 export function AppShell({ children }: AppShellProps) {
+  const router = useRouter();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      await fetch('/api/auth/logout', {
+        method: 'POST',
+      });
+    } finally {
+      router.push('/login');
+      router.refresh();
+      setIsLoggingOut(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-main">
       <div className="absolute inset-0 bg-line-grid opacity-30 pointer-events-none" aria-hidden="true" />
@@ -27,9 +47,9 @@ export function AppShell({ children }: AppShellProps) {
                 </Link>
                 <span className="text-xs text-secondary uppercase tracking-[0.3em] hidden sm:block">Console</span>
               </div>
-              <Button variant="secondary" size="sm" className="gap-2">
+              <Button variant="secondary" size="sm" className="gap-2" onClick={handleLogout} disabled={isLoggingOut}>
                 <RiLogoutCircleRLine className="w-4 h-4" />
-                Logout
+                {isLoggingOut ? 'Logging out...' : 'Logout'}
               </Button>
             </div>
           </div>

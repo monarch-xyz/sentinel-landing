@@ -1,0 +1,27 @@
+import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
+import { SESSION_COOKIE } from '@/lib/auth/session';
+import { supabaseAdmin } from '@/lib/supabase/admin';
+
+export async function POST() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(SESSION_COOKIE)?.value;
+
+  if (token) {
+    try {
+      await supabaseAdmin.auth.admin.signOut(token);
+    } catch {
+      // Clear local cookie even when token revocation fails.
+    }
+  }
+
+  cookieStore.set(SESSION_COOKIE, '', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 0,
+  });
+
+  return NextResponse.json({ ok: true });
+}

@@ -1,36 +1,52 @@
-'use client';
+import type { User } from '@supabase/supabase-js';
+import { cookies } from 'next/headers';
+import { supabaseAdmin } from '@/lib/supabase/admin';
 
-import { AuthSession } from '@/lib/auth/types';
+export const SESSION_COOKIE = 'sentinel-session';
+export const SIWE_NONCE_COOKIE = 'siwe-nonce';
 
-const SESSION_KEY = 'sentinel.auth.session';
+export interface AuthenticatedContext {
+  token: string;
+  user: User;
+}
 
-export const readSession = (): AuthSession | null => {
-  if (typeof window === 'undefined') {
-    return null;
+export const getWalletAddressFromUser = (user: User): string | null => {
+  const userMetadata = user.user_metadata as Record<string, unknown> | undefined;
+  const fromMetadata = userMetadata?.address;
+  if (typeof fromMetadata === 'string' && fromMetadata.length > 0) {
+    return fromMetadata.toLowerCase();
   }
 
-  const raw = window.localStorage.getItem(SESSION_KEY);
-  if (!raw) {
-    return null;
+  if (user.email?.endsWith('@wallet.sentinel')) {
+    return user.email.split('@')[0]?.toLowerCase() ?? null;
   }
 
-  try {
-    return JSON.parse(raw) as AuthSession;
-  } catch {
-    return null;
-  }
+  return null;
 };
 
-export const storeSession = (session: AuthSession) => {
-  if (typeof window === 'undefined') {
-    return;
-  }
-  window.localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+export const getSessionToken = async (): Promise<string | null> => {
+  const cookieStore = await cookies();
+  return cookieStore.get(SESSION_COOKIE)?.value ?? null;
 };
 
-export const clearSession = () => {
-  if (typeof window === 'undefined') {
-    return;
+export const getAuthenticatedContext = async (): Promise<AuthenticatedContext | null> => {
+  const token = await getSessionToken();
+  if (!token) {
+    return null;
   }
-  window.localStorage.removeItem(SESSION_KEY);
+
+  const { data, error } = await supabaseAdmin.auth.getUser(token);
+  if (error || !data?.user) {
+    return null;
+  }
+
+  return {
+    token,
+    user: data.user,
+  };
+};
+
+export const getAuthenticatedUser = async (): Promise<User | null> => {
+  const context = await getAuthenticatedContext();
+  return context?.user ?? null;
 };
