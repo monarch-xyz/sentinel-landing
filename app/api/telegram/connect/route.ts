@@ -7,14 +7,7 @@ interface TelegramConnectPayload {
   token: string;
 }
 
-export async function POST(request: Request) {
-  let payload: TelegramConnectPayload;
-  try {
-    payload = (await request.json()) as TelegramConnectPayload;
-  } catch {
-    return NextResponse.json({ error: 'invalid_json' }, { status: 400 });
-  }
-
+const handleConnect = async (payload: TelegramConnectPayload) => {
   if (!payload?.token) {
     return NextResponse.json({ error: 'missing_token' }, { status: 400 });
   }
@@ -56,4 +49,24 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
+};
+
+export async function POST(request: Request) {
+  let payload: TelegramConnectPayload;
+  try {
+    payload = (await request.json()) as TelegramConnectPayload;
+  } catch {
+    return NextResponse.json({ error: 'invalid_json' }, { status: 400 });
+  }
+
+  return handleConnect(payload);
+}
+
+export async function GET(request: Request) {
+  const url = new URL(request.url);
+  const token = url.searchParams.get('token');
+
+  return handleConnect({
+    token: token ?? '',
+  });
 }

@@ -49,6 +49,7 @@ Telegram delivery must use `app_user_id = sentinel_user_id` because Sentinel wor
 - Includes history reads (`GET /api/sentinel/signals/:id/history`) through the same user-scoped API-key path
 
 ### Telegram Delivery Bridge
+- `GET /api/telegram/connect?token=...` (bot-link friendly)
 - `POST /api/telegram/connect`
 - Accepts `{ token }` from delivery bot-link flow
 - Resolves the authenticated user mapping and calls delivery `POST /link/connect` with:
@@ -68,7 +69,8 @@ Telegram delivery must use `app_user_id = sentinel_user_id` because Sentinel wor
    - Sentinel API key stored encrypted in `sentinel_api_key`
 
 2. **Done: Per-user key provisioning**
-   - SIWE verify flow calls Sentinel `POST /api/v1/auth/register` (through configured Sentinel base URL)
+   - SIWE verify flow calls Sentinel `POST /api/v1/auth/register`
+   - If Sentinel register gate is enabled, backend sends `X-Admin-Key` from `SENTINEL_REGISTER_ADMIN_KEY`
    - Key is encrypted and stored in Supabase profile
 
 3. **Done: Proxy APIs**
@@ -93,11 +95,11 @@ Telegram delivery must use `app_user_id = sentinel_user_id` because Sentinel wor
 ```
 NEXT_PUBLIC_SENTINEL_ENDPOINT=http://localhost:3000/api/v1
 NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
 SUPABASE_URL=
-SUPABASE_SERVICE_ROLE_KEY=
+SUPABASE_SECRET_KEY=
 SENTINEL_API_BASE_URL=http://localhost:3000/api/v1
-SENTINEL_SERVICE_API_KEY=
+SENTINEL_REGISTER_ADMIN_KEY=
 SENTINEL_PROFILE_ENCRYPTION_KEY=
 DELIVERY_BASE_URL=
 ```
@@ -106,3 +108,7 @@ DELIVERY_BASE_URL=
 - Session creation now uses `admin.generateLink(type=magiclink)` + `verifyOtp(token_hash)` because `createSession` is not available in the installed `@supabase/supabase-js`.
 - `SENTINEL_PROFILE_ENCRYPTION_KEY` must decode to 32 bytes (base64, hex, or raw 32-char string).
 - If delivery and Sentinel run on the same host, `DELIVERY_BASE_URL` can be omitted; backend infers it from Sentinel base URL by removing `/api/v1`.
+- Code still supports legacy Supabase env names (`NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`) as fallbacks during migration.
+- Sentinel has no global API key for protected `/api/v1/*` calls. Protected endpoints always use user-scoped `X-API-Key`.
+- Register may still be admin-gated via Sentinel `REGISTER_ADMIN_KEY`; in that case set matching webapp `SENTINEL_REGISTER_ADMIN_KEY`.
+- `REGISTER_ADMIN_KEY` is configured in Sentinel service env. `SENTINEL_REGISTER_ADMIN_KEY` is configured in this webapp backend env.

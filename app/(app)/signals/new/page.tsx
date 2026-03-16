@@ -5,9 +5,9 @@ export default function NewSignalPage() {
     <div className="space-y-6">
       <div>
         <p className="text-xs uppercase tracking-[0.3em] text-secondary mb-2">Create</p>
-        <h1 className="font-zen text-3xl sm:text-4xl font-semibold">New Signal</h1>
+        <h1 className="font-zen text-3xl sm:text-4xl font-semibold">New Whale Signal</h1>
         <p className="text-secondary mt-2 max-w-2xl">
-          Use a preset to define conditions quickly, or toggle JSON mode when you need full control.
+          Start with a Morpho whale movement template, paste the supplier wallets you care about, and let Sentinel register the full JSON definition for you.
         </p>
       </div>
 

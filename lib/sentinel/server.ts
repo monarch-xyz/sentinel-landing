@@ -49,27 +49,24 @@ const pickString = (
 };
 
 export const registerSentinelUser = async ({
-  walletAddress,
   appUserId,
 }: {
-  walletAddress: string;
   appUserId: string;
 }) => {
-  const serviceApiKey = process.env.SENTINEL_SERVICE_API_KEY;
-  if (!serviceApiKey) {
-    throw new Error('Missing SENTINEL_SERVICE_API_KEY');
+  const registerAdminKey = process.env.SENTINEL_REGISTER_ADMIN_KEY;
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+
+  if (registerAdminKey) {
+    headers['X-Admin-Key'] = registerAdminKey;
   }
 
   const response = await fetch(buildSentinelApiUrl('/auth/register'), {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-API-Key': serviceApiKey,
-      Authorization: `Bearer ${serviceApiKey}`,
-    },
+    headers,
     body: JSON.stringify({
-      wallet_address: walletAddress,
-      external_user_id: appUserId,
+      name: `supabase-${appUserId}`,
     }),
     cache: 'no-store',
   });
@@ -82,6 +79,9 @@ export const registerSentinelUser = async ({
   }
 
   if (!response.ok) {
+    if (response.status === 401) {
+      throw new Error('Sentinel register unauthorized (set SENTINEL_REGISTER_ADMIN_KEY to match REGISTER_ADMIN_KEY)');
+    }
     throw new Error(`Sentinel register failed (${response.status})`);
   }
 

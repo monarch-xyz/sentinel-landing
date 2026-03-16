@@ -271,7 +271,7 @@ body::before {
 }
 
 .font-zen {
-  font-family: var(--font-zen), 'Zen Kaku Gothic New', sans-serif;
+  font-family: var(--font-inter), Inter, sans-serif;
 }
 
 .font-serif {

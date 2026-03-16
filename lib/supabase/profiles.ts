@@ -110,12 +110,7 @@ export const ensureProfileWithSentinelApiKey = async ({
     };
   }
 
-  if (!resolvedWalletAddress) {
-    throw new Error('Cannot provision Sentinel key without wallet address');
-  }
-
   const registration = await registerSentinelUser({
-    walletAddress: resolvedWalletAddress,
     appUserId: user.id,
   });
 

@@ -1,21 +1,31 @@
 import Link from 'next/link';
-import { SignalListItem } from '@/lib/types/signal';
+import { countTrackedWallets, describeSignalDefinition, getSignalMarketId } from '@/lib/signals/templates';
+import { SignalRecord } from '@/lib/types/signal';
 
 interface SignalRowProps {
-  signal: SignalListItem;
+  signal: SignalRecord;
 }
 
 export function SignalRow({ signal }: SignalRowProps) {
+  const trackedWallets = countTrackedWallets(signal.definition);
+  const marketId = getSignalMarketId(signal.definition);
+  const summary = describeSignalDefinition(signal.definition);
+  const updatedAt = new Date(signal.updated_at).toLocaleString();
+  const lastTriggeredAt = signal.last_triggered_at ? new Date(signal.last_triggered_at).toLocaleString() : '—';
+
   return (
-    <div className="grid grid-cols-1 gap-4 border-b border-border/70 py-4 sm:grid-cols-[2fr_1fr_1fr_1fr]">
+    <div className="grid grid-cols-1 gap-4 border-b border-border/70 py-4 sm:grid-cols-[2.2fr_0.9fr_1fr_1fr]">
       <div>
         <Link
-          href={`/app/signals/${signal.id}`}
+          href={`/signals/${signal.id}`}
           className="font-zen text-lg text-foreground hover:text-[#ff6b35] transition-colors no-underline"
         >
           {signal.name}
         </Link>
-        <p className="text-sm text-secondary">ID: {signal.id}</p>
+        <p className="text-sm text-secondary mt-1">{summary}</p>
+        <p className="text-xs text-secondary mt-2">
+          Market: <span className="font-mono">{marketId}</span> {trackedWallets > 0 ? `· ${trackedWallets} wallets` : ''}
+        </p>
       </div>
       <div>
         <p className="text-xs uppercase tracking-[0.3em] text-secondary">Status</p>
@@ -25,11 +35,11 @@ export function SignalRow({ signal }: SignalRowProps) {
       </div>
       <div>
         <p className="text-xs uppercase tracking-[0.3em] text-secondary">Last Trigger</p>
-        <p className="text-sm text-secondary">{signal.last_triggered || '—'}</p>
+        <p className="text-sm text-secondary">{lastTriggeredAt}</p>
       </div>
       <div>
-        <p className="text-xs uppercase tracking-[0.3em] text-secondary">Triggers</p>
-        <p className="text-sm text-secondary">{signal.trigger_count ?? 0}</p>
+        <p className="text-xs uppercase tracking-[0.3em] text-secondary">Updated</p>
+        <p className="text-sm text-secondary">{updatedAt}</p>
       </div>
     </div>
   );

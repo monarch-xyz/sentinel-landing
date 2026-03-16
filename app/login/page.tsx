@@ -20,7 +20,7 @@ export default function LoginPage() {
           description="Sign in with Ethereum to connect your wallet identity."
           icon={<RiWallet3Line className="w-5 h-5" />}
         >
-          <SiwePanel onConnect={() => router.push('/app')} />
+          <SiwePanel onSuccess={() => router.push('/app')} />
         </AuthOptionCard>
       </div>
     </AuthShell>

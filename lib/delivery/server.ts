@@ -23,6 +23,8 @@ const inferDeliveryBaseUrl = () => {
 export const getDeliveryBaseUrl = () =>
   trimTrailingSlash(process.env.DELIVERY_BASE_URL ?? inferDeliveryBaseUrl());
 
+export const getDeliveryWebhookUrl = () => `${getDeliveryBaseUrl()}/webhook/deliver`;
+
 export const connectDeliveryLink = async ({
   token,
   appUserId,

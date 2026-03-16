@@ -13,7 +13,7 @@ interface AppShellProps {
 
 const navItems = [
   { href: '/app', label: 'Signals', icon: RiNotification3Line },
-  { href: '/app/signals/new', label: 'New Signal', icon: RiPulseLine },
+  { href: '/signals/new', label: 'New Signal', icon: RiPulseLine },
 ];
 
 export function AppShell({ children }: AppShellProps) {
