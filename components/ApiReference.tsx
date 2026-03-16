@@ -33,7 +33,7 @@ export function ApiReference() {
       {/* Background */}
       <div className="absolute inset-0 bg-surface" />
 
-      <div className="container mx-auto px-6 sm:px-8 md:px-12 lg:px-16 relative z-10">
+      <div className="page-gutter relative z-10">
         <div className="max-w-4xl mx-auto">
           {/* Section header */}
           <motion.div

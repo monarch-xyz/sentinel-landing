@@ -22,7 +22,7 @@ export function AuthShell({ title, description, children }: AuthShellProps) {
       <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-gradient-to-br from-[#ff6b35]/30 via-[#ff9f1c]/20 to-transparent blur-2xl" />
       <div className="absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-gradient-to-br from-[#ff9f1c]/20 via-[#ff6b35]/10 to-transparent blur-2xl" />
 
-      <div className="container mx-auto px-6 sm:px-8 md:px-12 lg:px-16 relative z-10">
+      <div className="page-gutter relative z-10 flex min-h-screen flex-col">
         <div className="py-10">
           <Link href="/" className="inline-flex items-center gap-2 text-secondary hover:text-foreground transition-colors no-underline">
             <span className="text-xl">🔥</span>
@@ -30,13 +30,19 @@ export function AuthShell({ title, description, children }: AuthShellProps) {
           </Link>
         </div>
 
-        <div className="max-w-5xl mx-auto pb-16">
-          <div className="mb-10">
-            <p className="text-xs uppercase tracking-[0.3em] text-secondary mb-3">Access</p>
-            <h1 className="font-zen text-3xl sm:text-4xl font-semibold mb-3">{title}</h1>
-            <p className="text-secondary leading-relaxed max-w-2xl">{description}</p>
+        <div className="grid flex-1 place-items-center pb-16 pt-4 sm:pb-20">
+          <div className="mx-auto w-full max-w-2xl">
+            <div className="mx-auto w-full rounded-[28px] border border-border/70 bg-background/75 p-6 shadow-[0_24px_80px_-48px_rgba(255,107,53,0.45)] backdrop-blur-xl sm:p-8 md:p-10">
+              <div className="mx-auto mb-10 max-w-xl text-center">
+                <p className="text-xs uppercase tracking-[0.3em] text-secondary mb-3">Access</p>
+                <h1 className="font-zen text-3xl sm:text-4xl font-semibold mb-3">{title}</h1>
+                <p className="text-secondary leading-relaxed">{description}</p>
+              </div>
+              <div className="mx-auto w-full max-w-lg">
+                {children}
+              </div>
+            </div>
           </div>
-          {children}
         </div>
       </div>
     </div>

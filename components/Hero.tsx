@@ -28,7 +28,7 @@ export function Hero() {
 
       {/* Content */}
       <div className="flex-1 flex items-center relative z-10">
-        <div className="container mx-auto px-6 sm:px-8 md:px-12 lg:px-16">
+        <div className="page-gutter">
           <div className="max-w-3xl">
             {/* Section tag */}
             <motion.div

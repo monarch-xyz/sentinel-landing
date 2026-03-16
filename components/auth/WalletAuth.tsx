@@ -8,9 +8,10 @@ import { buildSiweMessage } from '@/lib/auth/siwe';
 
 interface WalletAuthProps {
   onSuccess?: () => void;
+  returnTo?: string;
 }
 
-export function WalletAuth({ onSuccess }: WalletAuthProps) {
+export function WalletAuth({ onSuccess, returnTo = '/app' }: WalletAuthProps) {
   const { address, isConnected, chainId, isConnecting: isConnectionConnecting } = useConnection();
   const { mutateAsync: connectAsync, isPending: isConnecting } = useConnect();
   const connectors = useConnectors();
@@ -53,8 +54,9 @@ export function WalletAuth({ onSuccess }: WalletAuthProps) {
         nonce: nonceResponse.nonce,
       });
       const signature = await signMessageAsync({ message });
-      await verifySiwe({ message, signature, address });
+      await verifySiwe({ message, signature });
       onSuccess?.();
+      window.location.assign(returnTo);
       setStatus('idle');
     } catch (signError) {
       setError(signError instanceof Error ? signError.message : 'Unable to sign in with wallet.');

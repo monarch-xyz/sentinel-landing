@@ -14,8 +14,8 @@ export function SignalRow({ signal }: SignalRowProps) {
   const lastTriggeredAt = signal.last_triggered_at ? new Date(signal.last_triggered_at).toLocaleString() : '—';
 
   return (
-    <div className="grid grid-cols-1 gap-4 border-b border-border/70 py-4 sm:grid-cols-[2.2fr_0.9fr_1fr_1fr]">
-      <div>
+    <div className="grid grid-cols-1 gap-4 py-4 sm:grid-cols-[minmax(0,2fr)_0.8fr_0.95fr_0.95fr_auto] sm:items-start">
+      <div className="min-w-0">
         <Link
           href={`/signals/${signal.id}`}
           className="font-zen text-lg text-foreground hover:text-[#ff6b35] transition-colors no-underline"
@@ -40,6 +40,14 @@ export function SignalRow({ signal }: SignalRowProps) {
       <div>
         <p className="text-xs uppercase tracking-[0.3em] text-secondary">Updated</p>
         <p className="text-sm text-secondary">{updatedAt}</p>
+      </div>
+      <div className="sm:justify-self-end">
+        <Link
+          href={`/signals/${signal.id}`}
+          className="inline-flex items-center rounded-full border border-border px-3 py-1.5 text-sm text-secondary transition-colors no-underline hover:border-[#ff6b35]/30 hover:text-[#ff6b35]"
+        >
+          View DSL
+        </Link>
       </div>
     </div>
   );

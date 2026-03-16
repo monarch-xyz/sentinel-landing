@@ -102,7 +102,7 @@ export function CodeExamples() {
         aria-hidden="true"
       />
 
-      <div className="container mx-auto px-6 sm:px-8 md:px-12 lg:px-16 relative z-10">
+      <div className="page-gutter relative z-10">
         {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

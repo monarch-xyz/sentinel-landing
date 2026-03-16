@@ -21,6 +21,22 @@ export interface ApiClientOptions {
   getToken?: () => string | null | undefined;
 }
 
+const extractErrorMessage = (
+  payload: AuthError | Record<string, unknown> | undefined,
+  fallbackMessage: string
+) => {
+  if (!payload) {
+    return fallbackMessage;
+  }
+
+  const message =
+    (typeof payload.details === 'string' ? payload.details : undefined) ??
+    payload.message ??
+    (typeof payload.error === 'string' ? payload.error : undefined);
+
+  return message?.toString() || fallbackMessage;
+};
+
 const getDefaultBaseUrl = () => {
   if (process.env.NEXT_PUBLIC_API_BASE_URL) {
     return process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -54,7 +70,7 @@ export const createApiClient = (options: ApiClientOptions = {}) => {
       } catch {
         payload = undefined;
       }
-      throw new ApiError(payload?.message?.toString() || response.statusText, response.status, payload);
+      throw new ApiError(extractErrorMessage(payload, response.statusText), response.status, payload);
     }
 
     if (response.status === 204) {
@@ -65,7 +81,7 @@ export const createApiClient = (options: ApiClientOptions = {}) => {
   };
 
   return {
-    get: <T>(path: string) => request<T>(path, { method: 'GET' }),
+    get: <T>(path: string, init?: RequestInit) => request<T>(path, { ...init, method: 'GET' }),
     post: <T, B = unknown>(path: string, body: B) =>
       request<T>(path, { method: 'POST', body: JSON.stringify(body) }),
     patch: <T, B = unknown>(path: string, body: B) =>

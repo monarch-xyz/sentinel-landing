@@ -1,24 +1,43 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { RiLogoutCircleRLine, RiNotification3Line, RiPulseLine } from 'react-icons/ri';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { RiAddLine, RiDashboardLine, RiFlashlightLine, RiLogoutCircleRLine, RiTelegram2Line } from 'react-icons/ri';
 import { Button } from '@/components/ui/Button';
+import { buildLoginHref } from '@/lib/auth/redirect';
+import { cn } from '@/lib/utils';
 
 interface AppShellProps {
   children: ReactNode;
 }
 
 const navItems = [
-  { href: '/app', label: 'Signals', icon: RiNotification3Line },
-  { href: '/signals/new', label: 'New Signal', icon: RiPulseLine },
+  { href: '/app', label: 'Dashboard', icon: RiDashboardLine },
+  { href: '/signals', label: 'Signals', icon: RiFlashlightLine },
+  { href: '/telegram', label: 'Telegram', icon: RiTelegram2Line },
 ];
+
+const isActivePath = (pathname: string | null, href: string) => {
+  if (!pathname) {
+    return false;
+  }
+
+  if (href === '/app') {
+    return pathname === href;
+  }
+
+  return pathname === href || pathname.startsWith(`${href}/`);
+};
 
 export function AppShell({ children }: AppShellProps) {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const currentSearch = searchParams.toString();
+  const currentPath = pathname ? `${pathname}${currentSearch ? `?${currentSearch}` : ''}` : undefined;
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
@@ -27,7 +46,7 @@ export function AppShell({ children }: AppShellProps) {
         method: 'POST',
       });
     } finally {
-      router.push('/login');
+      router.replace(buildLoginHref(currentPath));
       router.refresh();
       setIsLoggingOut(false);
     }
@@ -35,46 +54,63 @@ export function AppShell({ children }: AppShellProps) {
 
   return (
     <div className="min-h-screen bg-main">
-      <div className="absolute inset-0 bg-line-grid opacity-30 pointer-events-none" aria-hidden="true" />
+      <div className="pointer-events-none absolute inset-0 bg-line-grid opacity-30" aria-hidden="true" />
       <div className="relative z-10">
-        <header className="border-b border-border/80 bg-background/80 backdrop-blur-md">
-          <div className="container mx-auto px-6 sm:px-8 md:px-12 lg:px-16">
-            <div className="flex items-center justify-between h-16">
-              <div className="flex items-center gap-4">
-                <Link href="/app" className="flex items-center gap-2 no-underline">
-                  <span className="text-xl">🔥</span>
-                  <span className="font-zen text-lg text-foreground">Sentinel</span>
-                </Link>
-                <span className="text-xs text-secondary uppercase tracking-[0.3em] hidden sm:block">Console</span>
+        <header className="border-b border-border/80 bg-background/85 backdrop-blur-md">
+          <div className="page-gutter">
+            <div className="page-frame py-4">
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                <div className="flex items-center gap-4">
+                  <Link href="/app" className="flex items-center gap-2 no-underline">
+                    <span className="text-xl">🔥</span>
+                    <span className="font-zen text-lg text-foreground">Sentinel</span>
+                  </Link>
+                  <span className="hidden text-xs uppercase tracking-[0.3em] text-secondary sm:block">Console</span>
+                </div>
+
+                <nav className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto pb-1 lg:justify-center lg:pb-0">
+                  {navItems.map((item) => {
+                    const active = isActivePath(pathname, item.href);
+
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        aria-current={active ? 'page' : undefined}
+                        className={cn(
+                          'inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm no-underline transition-colors',
+                          active
+                            ? 'border-[#ff6b35]/40 bg-[#ff6b35]/12 text-[#ff6b35]'
+                            : 'border-transparent bg-transparent text-secondary hover:border-border hover:bg-background/70 hover:text-foreground'
+                        )}
+                      >
+                        <item.icon className="h-4 w-4" />
+                        <span>{item.label}</span>
+                      </Link>
+                    );
+                  })}
+                </nav>
+
+                <div className="flex items-center gap-2 self-start lg:self-auto">
+                  <Link href="/signals/new" className="no-underline">
+                    <Button size="sm" className="gap-2">
+                      <RiAddLine className="h-4 w-4" />
+                      New signal
+                    </Button>
+                  </Link>
+                  <Button variant="secondary" size="sm" className="gap-2" onClick={handleLogout} disabled={isLoggingOut}>
+                    <RiLogoutCircleRLine className="h-4 w-4" />
+                    {isLoggingOut ? 'Logging out...' : 'Logout'}
+                  </Button>
+                </div>
               </div>
-              <Button variant="secondary" size="sm" className="gap-2" onClick={handleLogout} disabled={isLoggingOut}>
-                <RiLogoutCircleRLine className="w-4 h-4" />
-                {isLoggingOut ? 'Logging out...' : 'Logout'}
-              </Button>
             </div>
           </div>
         </header>
 
-        <div className="container mx-auto px-6 sm:px-8 md:px-12 lg:px-16 py-8">
-          <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-8">
-            <aside className="bg-surface border border-border rounded-lg p-4 h-fit">
-              <p className="text-xs uppercase tracking-[0.3em] text-secondary mb-4">Navigate</p>
-              <nav className="flex flex-col gap-2">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="flex items-center gap-3 px-3 py-2 rounded-md text-secondary hover:text-foreground hover:bg-hovered transition-colors no-underline"
-                  >
-                    <item.icon className="w-4 h-4" />
-                    <span className="text-sm">{item.label}</span>
-                  </Link>
-                ))}
-              </nav>
-            </aside>
-            <main className="min-w-0">{children}</main>
-          </div>
-        </div>
+        <main className="page-gutter py-8">
+          <div className="page-frame min-w-0">{children}</div>
+        </main>
       </div>
     </div>
   );

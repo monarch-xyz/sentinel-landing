@@ -25,6 +25,10 @@ interface BuilderFormState {
   cooldownMinutes: string;
 }
 
+interface SignalBuilderFormProps {
+  initialPreset?: SignalTemplateId;
+}
+
 const presetIcons: Record<SignalTemplateId, ReactNode> = {
   'whale-exit-trio': <RiAlarmWarningLine className="w-5 h-5" />,
   'whale-exit-pair': <RiExchangeDollarLine className="w-5 h-5" />,
@@ -47,10 +51,10 @@ const buildDefaultState = (templateId: SignalTemplateId): BuilderFormState => {
   };
 };
 
-export function SignalBuilderForm() {
+export function SignalBuilderForm({ initialPreset = 'whale-exit-trio' }: SignalBuilderFormProps) {
   const router = useRouter();
-  const [selectedPreset, setSelectedPreset] = useState<SignalTemplateId>('whale-exit-trio');
-  const [formState, setFormState] = useState<BuilderFormState>(() => buildDefaultState('whale-exit-trio'));
+  const [selectedPreset, setSelectedPreset] = useState<SignalTemplateId>(initialPreset);
+  const [formState, setFormState] = useState<BuilderFormState>(() => buildDefaultState(initialPreset));
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

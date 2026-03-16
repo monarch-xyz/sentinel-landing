@@ -11,7 +11,8 @@ export interface AuthSession {
 
 export interface AuthError {
   error: string;
-  message: string;
+  message?: string;
+  details?: string;
   field?: string;
 }
 
@@ -27,7 +28,6 @@ export interface SiweNonceResponse {
 export interface SiweVerifyRequest {
   message: string;
   signature: string;
-  address: string;
 }
 
 export interface TelegramConnectRequest {

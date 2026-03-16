@@ -12,7 +12,8 @@ const localClient = createApiClient({ baseUrl: '' });
 export const requestMagicLink = (payload: MagicLinkRequest) =>
   localClient.post<AuthSession, MagicLinkRequest>('/api/auth/magic-link', payload);
 
-export const requestSiweNonce = () => localClient.get<SiweNonceResponse>('/api/auth/siwe/nonce');
+export const requestSiweNonce = () =>
+  localClient.get<SiweNonceResponse>('/api/auth/siwe/nonce', { cache: 'no-store' });
 
 export const verifySiwe = (payload: SiweVerifyRequest) =>
   localClient.post<AuthSession, SiweVerifyRequest>('/api/auth/siwe/verify', payload);

@@ -1,5 +1,6 @@
 import type { User } from '@supabase/supabase-js';
 import { getWalletAddressFromUser } from '@/lib/auth/session';
+import { getWalletSession } from '@/lib/auth/wallet-session';
 import { decryptSecret, encryptSecret } from '@/lib/security/secrets';
 import { registerSentinelUser } from '@/lib/sentinel/server';
 import { supabaseAdmin } from '@/lib/supabase/admin';
@@ -86,6 +87,21 @@ export const ensureProfileWithSentinelApiKey = async ({
   walletAddress?: string;
 }) => {
   const resolvedWalletAddress = resolveWalletAddress(user, walletAddress);
+  const walletSession = await getWalletSession();
+
+  if (
+    resolvedWalletAddress &&
+    walletSession?.address === resolvedWalletAddress &&
+    walletSession.sentinelApiKey &&
+    walletSession.sentinelUserId
+  ) {
+    return {
+      profile: null,
+      apiKey: walletSession.sentinelApiKey,
+      sentinelUserId: walletSession.sentinelUserId,
+    };
+  }
+
   let profile = await getProfileByUserId(user.id);
 
   if (!profile) {

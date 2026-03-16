@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { SESSION_COOKIE } from '@/lib/auth/session';
+import { SESSION_COOKIE, WALLET_SESSION_COOKIE } from '@/lib/auth/session';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 
 export async function POST() {
@@ -16,6 +16,14 @@ export async function POST() {
   }
 
   cookieStore.set(SESSION_COOKIE, '', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 0,
+  });
+
+  cookieStore.set(WALLET_SESSION_COOKIE, '', {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',

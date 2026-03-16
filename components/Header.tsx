@@ -47,7 +47,7 @@ export function Header() {
         scrolled ? 'bg-background/80 backdrop-blur-md border-b border-border' : 'bg-transparent'
       )}
     >
-      <div className="container mx-auto px-6 sm:px-8 md:px-12 lg:px-16">
+      <div className="page-gutter">
         <div className="flex items-center justify-between h-14 md:h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 no-underline">

@@ -82,7 +82,7 @@ export function Story() {
       <GridDivider rows={4} />
 
       <div className="py-16 md:py-24">
-        <div className="container mx-auto px-6 sm:px-8 md:px-12 lg:px-16">
+        <div className="page-gutter">
           {storyBeats.map((beat, index) => (
             <motion.div
               key={beat.id}

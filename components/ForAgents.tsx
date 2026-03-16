@@ -23,7 +23,7 @@ export function ForAgents() {
       <GridDivider rows={4} />
       
       <div className="py-16 md:py-24">
-        <div className="container mx-auto px-6 sm:px-8 md:px-12 lg:px-16">
+        <div className="page-gutter">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left content */}
             <motion.div

@@ -1,5 +1,10 @@
 const trimTrailingSlash = (value: string) => value.replace(/\/+$/, '');
 
+const normalizeBaseUrl = (value: string) => {
+  const withScheme = /^[a-z][a-z\d+\-.]*:\/\//i.test(value) ? value : `http://${value}`;
+  return trimTrailingSlash(new URL(withScheme).toString());
+};
+
 export class DeliveryError extends Error {
   status: number;
   payload: unknown;
@@ -13,15 +18,12 @@ export class DeliveryError extends Error {
 }
 
 const inferDeliveryBaseUrl = () => {
-  const sentinelApiBase =
-    process.env.SENTINEL_API_BASE_URL ??
-    process.env.NEXT_PUBLIC_SENTINEL_ENDPOINT ??
-    'http://localhost:3000/api/v1';
-  return trimTrailingSlash(sentinelApiBase).replace(/\/api\/v1$/, '');
+  const sentinelApiBase = process.env.SENTINEL_API_BASE_URL ?? 'http://localhost:3000/api/v1';
+  return normalizeBaseUrl(sentinelApiBase).replace(/\/api\/v1$/, '');
 };
 
 export const getDeliveryBaseUrl = () =>
-  trimTrailingSlash(process.env.DELIVERY_BASE_URL ?? inferDeliveryBaseUrl());
+  normalizeBaseUrl(process.env.DELIVERY_BASE_URL ?? inferDeliveryBaseUrl());
 
 export const getDeliveryWebhookUrl = () => `${getDeliveryBaseUrl()}/webhook/deliver`;
 

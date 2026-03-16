@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { SignalDslPanel } from '@/components/app/SignalDslPanel';
 import { Button } from '@/components/ui/Button';
 import { getAuthenticatedUser } from '@/lib/auth/session';
-import { countTrackedWallets, describeSignalDefinition, getSignalMarketId } from '@/lib/signals/templates';
 import { requestSentinelForUser, SentinelRequestError } from '@/lib/sentinel/user-server';
 import type { SignalHistoryResponse, SignalNotificationLogEntry, SignalRecord, SignalRunLogEntry } from '@/lib/types/signal';
 
@@ -70,47 +70,29 @@ export default async function SignalDetailPage({ params }: SignalDetailPageProps
     throw error;
   }
 
-  const trackedWallets = countTrackedWallets(signal.definition);
-  const summary = describeSignalDefinition(signal.definition);
-  const marketId = getSignalMarketId(signal.definition);
-
   return (
     <div className="space-y-6">
       <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-secondary mb-2">Signal</p>
+          <Link href="/signals" className="text-xs uppercase tracking-[0.3em] text-secondary no-underline transition-colors hover:text-foreground">
+            Signals
+          </Link>
           <h1 className="font-zen text-3xl sm:text-4xl font-semibold">{signal.name}</h1>
-          <p className="text-secondary mt-2 max-w-3xl">{signal.description || summary}</p>
-          <div className="flex flex-wrap gap-2 mt-4 text-xs text-secondary">
-            <span className="rounded-full border border-border px-3 py-1">{signal.is_active ? 'Active' : 'Paused'}</span>
-            <span className="rounded-full border border-border px-3 py-1">Market {marketId}</span>
-            <span className="rounded-full border border-border px-3 py-1">{trackedWallets} wallets tracked</span>
-            <span className="rounded-full border border-border px-3 py-1">Window {signal.definition.window.duration}</span>
-          </div>
+          <p className="text-secondary mt-2 max-w-3xl">Review the raw DSL, the recent evaluation history, and delivery attempts for this signal.</p>
         </div>
-        <Link href="/signals/new" className="no-underline">
-          <Button>Create another</Button>
-        </Link>
+        <div className="flex flex-wrap gap-3">
+          <Link href="/signals" className="no-underline">
+            <Button variant="secondary">Back to inventory</Button>
+          </Link>
+          <Link href="/signals/new" className="no-underline">
+            <Button>Create another</Button>
+          </Link>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-6">
-        <div className="bg-surface border border-border rounded-lg p-6">
-          <h2 className="font-zen text-xl font-semibold mb-4">Definition</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 text-sm">
-            <div className="rounded-md border border-border/80 bg-background/40 p-3">
-              <p className="text-xs uppercase tracking-[0.25em] text-secondary">Created</p>
-              <p className="mt-2">{formatTimestamp(signal.created_at)}</p>
-            </div>
-            <div className="rounded-md border border-border/80 bg-background/40 p-3">
-              <p className="text-xs uppercase tracking-[0.25em] text-secondary">Last Trigger</p>
-              <p className="mt-2">{formatTimestamp(signal.last_triggered_at)}</p>
-            </div>
-          </div>
-          <pre className="text-xs leading-relaxed bg-[#0d1117] text-[#e6edf3] rounded-lg p-4 overflow-x-auto">
-            {JSON.stringify(signal.definition, null, 2)}
-          </pre>
-        </div>
+      <SignalDslPanel signal={signal} title="Signal DSL structure" />
 
+      <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-6">
         <div className="bg-surface border border-border rounded-lg p-6">
           <h2 className="font-zen text-xl font-semibold mb-4">Recent Evaluations</h2>
           {history.evaluations.length > 0 ? (

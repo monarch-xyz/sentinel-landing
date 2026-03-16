@@ -4,12 +4,13 @@ import { SiweMessage } from 'siwe';
 import type { User } from '@supabase/supabase-js';
 import { ensureProfileWithSentinelApiKey, getProfileByWalletAddress } from '@/lib/supabase/profiles';
 import { supabaseAdmin } from '@/lib/supabase/admin';
-import { SESSION_COOKIE, SIWE_NONCE_COOKIE } from '@/lib/auth/session';
+import { SESSION_COOKIE, SIWE_NONCE_COOKIE, WALLET_SESSION_COOKIE } from '@/lib/auth/session';
+import { encodeWalletSession } from '@/lib/auth/wallet-session';
+import { registerSentinelUser } from '@/lib/sentinel/server';
 
 interface VerifyPayload {
   message: string;
   signature: string;
-  address: string;
 }
 
 const findAuthUserByEmail = async (email: string): Promise<User | null> => {
@@ -98,64 +99,132 @@ const createUserSession = async (email: string, request: Request) => {
   return verifyData.session;
 };
 
+const createWalletFallbackSession = async (walletAddress: string) => {
+  const registration = await registerSentinelUser({
+    appUserId: `wallet:${walletAddress}`,
+  });
+
+  return {
+    address: walletAddress,
+    sentinelApiKey: registration.apiKey,
+    sentinelUserId: registration.sentinelUserId,
+    issuedAt: new Date().toISOString(),
+  };
+};
+
 export async function POST(request: Request) {
   let payload: VerifyPayload;
   try {
     payload = (await request.json()) as VerifyPayload;
   } catch {
-    return NextResponse.json({ error: 'invalid_json' }, { status: 400 });
+    return NextResponse.json(
+      { error: 'invalid_json', message: 'The sign-in request payload was invalid.' },
+      { status: 400 }
+    );
   }
 
-  if (!payload?.message || !payload?.signature || !payload?.address) {
-    return NextResponse.json({ error: 'missing_fields' }, { status: 400 });
+  if (!payload?.message || !payload?.signature) {
+    return NextResponse.json(
+      { error: 'missing_fields', message: 'The wallet signature payload was incomplete.' },
+      { status: 400 }
+    );
   }
 
-  const normalizedPayloadAddress = payload.address.toLowerCase();
   const cookieStore = await cookies();
   const nonce = cookieStore.get(SIWE_NONCE_COOKIE)?.value;
   if (!nonce) {
-    return NextResponse.json({ error: 'missing_nonce' }, { status: 400 });
+    return NextResponse.json(
+      {
+        error: 'missing_nonce',
+        message: 'The sign-in session expired before verification. Please sign the message again.',
+      },
+      { status: 400 }
+    );
   }
 
   try {
     const siweMessage = new SiweMessage(payload.message);
-    const fields = await siweMessage.verify({
+    const verification = await siweMessage.verify(
+      {
       signature: payload.signature,
-      domain: request.headers.get('host') ?? new URL(request.url).host,
       nonce,
-    });
+      },
+      { suppressExceptions: true }
+    );
 
-    if (!fields.success) {
-      return NextResponse.json({ error: 'invalid_signature' }, { status: 401 });
+    if (!verification.success) {
+      const verificationError =
+        verification.error?.type || String(verification.error ?? 'Unable to verify the SIWE signature.');
+
+      return NextResponse.json(
+        {
+          error: 'verification_failed',
+          message: verificationError,
+          details: verificationError,
+        },
+        { status: 401 }
+      );
     }
 
-    const signedAddress = siweMessage.address.toLowerCase();
-    if (signedAddress !== normalizedPayloadAddress) {
-      return NextResponse.json({ error: 'address_mismatch' }, { status: 400 });
+    const normalizedAddress = verification.data.address.toLowerCase();
+    try {
+      const user = await getOrCreateWalletUser(normalizedAddress);
+      const session = await createUserSession(`${normalizedAddress}@wallet.sentinel`, request);
+      const provisioning = await ensureProfileWithSentinelApiKey({
+        user,
+        walletAddress: normalizedAddress,
+      });
+
+      cookieStore.set(SESSION_COOKIE, session.access_token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7,
+      });
+      cookieStore.set(WALLET_SESSION_COOKIE, '', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+        maxAge: 0,
+      });
+      cookieStore.delete(SIWE_NONCE_COOKIE);
+
+      return NextResponse.json({
+        token: session.access_token,
+        provider: 'siwe',
+        address: normalizedAddress,
+        sentinelUserId: provisioning.sentinelUserId,
+      });
+    } catch (primaryError) {
+      const fallbackSession = await createWalletFallbackSession(normalizedAddress);
+
+      cookieStore.set(WALLET_SESSION_COOKIE, encodeWalletSession(fallbackSession), {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7,
+      });
+      cookieStore.set(SESSION_COOKIE, '', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+        maxAge: 0,
+      });
+      cookieStore.delete(SIWE_NONCE_COOKIE);
+
+      return NextResponse.json({
+        token: fallbackSession.address,
+        provider: 'siwe',
+        address: fallbackSession.address,
+        sentinelUserId: fallbackSession.sentinelUserId,
+        mode: 'wallet-fallback',
+        details: primaryError instanceof Error ? primaryError.message : 'supabase_fallback',
+      });
     }
-
-    const user = await getOrCreateWalletUser(normalizedPayloadAddress);
-    const session = await createUserSession(`${normalizedPayloadAddress}@wallet.sentinel`, request);
-    const provisioning = await ensureProfileWithSentinelApiKey({
-      user,
-      walletAddress: normalizedPayloadAddress,
-    });
-
-    cookieStore.set(SESSION_COOKIE, session.access_token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 60 * 60 * 24 * 7,
-    });
-    cookieStore.delete(SIWE_NONCE_COOKIE);
-
-    return NextResponse.json({
-      token: session.access_token,
-      provider: 'siwe',
-      address: normalizedPayloadAddress,
-      sentinelUserId: provisioning.sentinelUserId,
-    });
   } catch (error) {
     const message = (error as Error).message;
     const isServerError =
@@ -165,7 +234,11 @@ export async function POST(request: Request) {
       message.startsWith('Sentinel ');
     cookieStore.delete(SIWE_NONCE_COOKIE);
     return NextResponse.json(
-      { error: 'verification_failed', details: message },
+      {
+        error: 'verification_failed',
+        message: 'Wallet sign-in verification failed.',
+        details: message,
+      },
       { status: isServerError ? 500 : 400 }
     );
   }

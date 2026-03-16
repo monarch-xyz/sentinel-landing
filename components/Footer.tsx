@@ -12,7 +12,7 @@ const links = [
 export function Footer() {
   return (
     <footer className="relative py-12 border-t border-border">
-      <div className="container mx-auto px-6 sm:px-8 md:px-12 lg:px-16">
+      <div className="page-gutter">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Logo and tagline */}
           <div className="flex flex-col items-center md:items-start gap-2">

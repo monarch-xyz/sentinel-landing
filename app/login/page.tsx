@@ -1,28 +1,22 @@
-'use client';
+import { redirect } from 'next/navigation';
+import { LoginPageContent } from '@/components/auth/LoginPageContent';
+import { LOGIN_RETURN_TO_PARAM } from '@/lib/auth/constants';
+import { getAuthenticatedUser } from '@/lib/auth/session';
+import { DEFAULT_SIGNED_IN_PATH, resolveReturnTo } from '@/lib/auth/redirect';
 
-import { useRouter } from 'next/navigation';
-import { RiWallet3Line } from 'react-icons/ri';
-import { AuthShell } from '@/components/auth/AuthShell';
-import { AuthOptionCard } from '@/components/auth/AuthOptionCard';
-import { SiwePanel } from '@/components/auth/SiwePanel';
+interface LoginPageProps {
+  searchParams?: Promise<{ [LOGIN_RETURN_TO_PARAM]?: string }> | { [LOGIN_RETURN_TO_PARAM]?: string };
+}
 
-export default function LoginPage() {
-  const router = useRouter();
+export default async function LoginPage({ searchParams }: LoginPageProps) {
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const returnTo = resolveReturnTo(resolvedSearchParams?.[LOGIN_RETURN_TO_PARAM]);
+  const isReturningToProtectedPage = returnTo !== DEFAULT_SIGNED_IN_PATH;
+  const user = await getAuthenticatedUser();
 
-  return (
-    <AuthShell
-      title="Access Sentinel"
-      description="Sign in with your wallet to start managing signals."
-    >
-      <div className="max-w-2xl">
-        <AuthOptionCard
-          title="Wallet login"
-          description="Sign in with Ethereum to connect your wallet identity."
-          icon={<RiWallet3Line className="w-5 h-5" />}
-        >
-          <SiwePanel onSuccess={() => router.push('/app')} />
-        </AuthOptionCard>
-      </div>
-    </AuthShell>
-  );
+  if (user) {
+    redirect(returnTo);
+  }
+
+  return <LoginPageContent returnTo={returnTo} isReturningToProtectedPage={isReturningToProtectedPage} />;
 }

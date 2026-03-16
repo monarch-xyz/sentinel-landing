@@ -93,12 +93,11 @@ Telegram delivery must use `app_user_id = sentinel_user_id` because Sentinel wor
 ## Environment Variables
 
 ```
-NEXT_PUBLIC_SENTINEL_ENDPOINT=http://localhost:3000/api/v1
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
 SUPABASE_URL=
 SUPABASE_SECRET_KEY=
-SENTINEL_API_BASE_URL=http://localhost:3000/api/v1
+SENTINEL_API_BASE_URL=http://localhost:3300/api/v1
 SENTINEL_REGISTER_ADMIN_KEY=
 SENTINEL_PROFILE_ENCRYPTION_KEY=
 DELIVERY_BASE_URL=
@@ -108,6 +107,7 @@ DELIVERY_BASE_URL=
 - Session creation now uses `admin.generateLink(type=magiclink)` + `verifyOtp(token_hash)` because `createSession` is not available in the installed `@supabase/supabase-js`.
 - `SENTINEL_PROFILE_ENCRYPTION_KEY` must decode to 32 bytes (base64, hex, or raw 32-char string).
 - If delivery and Sentinel run on the same host, `DELIVERY_BASE_URL` can be omitted; backend infers it from Sentinel base URL by removing `/api/v1`.
+- `SENTINEL_API_BASE_URL` is the single canonical Sentinel endpoint for this app. It must be a full URL including scheme and `/api/v1`.
 - Code still supports legacy Supabase env names (`NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`) as fallbacks during migration.
 - Sentinel has no global API key for protected `/api/v1/*` calls. Protected endpoints always use user-scoped `X-API-Key`.
 - Register may still be admin-gated via Sentinel `REGISTER_ADMIN_KEY`; in that case set matching webapp `SENTINEL_REGISTER_ADMIN_KEY`.

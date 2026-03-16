@@ -14,11 +14,20 @@ const SENTINEL_BASE_URL_FALLBACK = 'http://localhost:3000/api/v1';
 
 const trimTrailingSlash = (value: string) => value.replace(/\/+$/, '');
 
+const normalizeSentinelBaseUrl = (value: string) => {
+  const withScheme = /^[a-z][a-z\d+\-.]*:\/\//i.test(value) ? value : `http://${value}`;
+  const url = new URL(withScheme);
+
+  const normalizedPath = trimTrailingSlash(url.pathname);
+  url.pathname =
+    !normalizedPath || normalizedPath === '/' ? '/api/v1' : normalizedPath;
+
+  return trimTrailingSlash(url.toString());
+};
+
 export const getSentinelApiBaseUrl = () =>
-  trimTrailingSlash(
-    process.env.SENTINEL_API_BASE_URL ??
-      process.env.NEXT_PUBLIC_SENTINEL_ENDPOINT ??
-      SENTINEL_BASE_URL_FALLBACK
+  normalizeSentinelBaseUrl(
+    process.env.SENTINEL_API_BASE_URL ?? SENTINEL_BASE_URL_FALLBACK
   );
 
 export const buildSentinelApiUrl = (path: string, search: string = '') => {
@@ -62,14 +71,21 @@ export const registerSentinelUser = async ({
     headers['X-Admin-Key'] = registerAdminKey;
   }
 
-  const response = await fetch(buildSentinelApiUrl('/auth/register'), {
-    method: 'POST',
-    headers,
-    body: JSON.stringify({
-      name: `supabase-${appUserId}`,
-    }),
-    cache: 'no-store',
-  });
+  let response: Response;
+  try {
+    response = await fetch(buildSentinelApiUrl('/auth/register'), {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        name: `supabase-${appUserId}`,
+      }),
+      cache: 'no-store',
+    });
+  } catch (error) {
+    throw new Error(
+      `Unable to reach Sentinel at ${getSentinelApiBaseUrl()}: ${error instanceof Error ? error.message : 'fetch failed'}`
+    );
+  }
 
   let payload: SentinelRegisterResponse | undefined;
   try {
